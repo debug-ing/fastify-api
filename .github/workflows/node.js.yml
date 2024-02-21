@@ -28,3 +28,18 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build
+  deploy:
+    runs-on: self-hosted
+    needs: build
+    steps:   
+      - name: Pull Repository ⚖️
+        run: cd /root/fastify-api && git pull origin main
+        
+      - name: Install Dependencies ❤️
+        run: cd /root/fastify-api && npm install
+
+      - name: Build the app ⚙️
+        run: cd /root/fastify-api && npm run build
+        
+      - name: reload app in pm2
+        run: cd /root/fastify-api && bash run.sh
